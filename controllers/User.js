@@ -2,10 +2,24 @@ const User=require("../models/User");
 const jwt=require("jsonwebtoken");
 const {generateToken} =require("../middleware/token")
 const {hashPassword,matchPassword}=require("../middleware/authentication")
+const z=require("zod");
 
+const schema=z.string();
+const schema1= z.object({
+    email:z.string(),
+    password:z.string(),
+    country:z.literal("IN").or(z.literal("US")) 
+})
 exports.login=async(req,res)=>{
     let {email,password}=req.body;
     console.log(req.body)
+    const response=schema.safeParse(email);
+    if(!response.success)
+    {
+        return res.status(403).json({
+            msg:"input is invalid"
+        })
+    }
     const user=User.findOne({email}).select("+password");
     if(!user)
     {

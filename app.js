@@ -4,6 +4,8 @@ const {connectDatabase}=require("./db/connect")
 const bodyParser=require("body-parser")
 const cookieParser=require("cookie-parser");
 
+const z=require("zod");
+
 
 //using middlewar
 //this middleware is used to make req.body works
